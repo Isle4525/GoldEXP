@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Входящие{% endblock %}
+
+{% block content %}
+<h2>Входящие сообщения</h2>
+
+{% for convo in conversations %}
+    <div class="mb-2">
+        <a href="{% url 'messaging:conversation' conversation_id=convo.id %}">
+            Переписка с {{ convo.get_other_user }}
+        </a>
+    </div>
+{% empty %}
+    <p>Нет сообщений.</p>
+{% endfor %}
+
+{% endblock %}

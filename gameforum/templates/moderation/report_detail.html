@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}Детали жалобы{% endblock %}
+{% block content %}
+<h2>Жалоба</h2>
+<p><strong>От:</strong> {{ report.reporter }}</p>
+<p><strong>Причина:</strong> {{ report.reason }}</p>
+<p><strong>Объект:</strong> {{ report.target }}</p>
+<a href="{% url 'reports' %}" class="btn btn-secondary">Назад</a>
+{% endblock %}

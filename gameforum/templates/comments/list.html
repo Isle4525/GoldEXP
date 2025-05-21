@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Комментарии{% endblock %}
+{% block content %}
+<h2>Комментарии</h2>
+{% for comment in comments %}
+    <div class="border-bottom mb-2 pb-2">
+        <p>{{ comment.author }}: {{ comment.text }}</p>
+    </div>
+{% empty %}
+    <p>Нет комментариев.</p>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Посты</h2>
+    {% if user.is_authenticated %}
+      <a href="{% url 'create_post' %}" class="btn btn-primary">Создать пост</a>
+    {% endif %}
+  </div>
+
+  <!-- Поиск -->
+  <form method="get" class="mb-3">
+    <div class="input-group">
+      <input type="text" name="search" class="form-control" placeholder="Поиск..." value="{{ request.GET.search }}">
+      <button type="submit" class="btn btn-outline-secondary">Искать</button>
+    </div>
+  </form>
+
+  <!-- Фильтрация по категориям -->
+  <div class="mb-3">
+    <strong>Категории:</strong>
+    <a href="{% url 'post_list' %}" class="btn btn-sm btn-outline-secondary {% if not request.GET.category %}active{% endif %}">Все</a>
+    {% for key, name in categories.items %}
+      <a href="?category={{ key }}" class="btn btn-sm btn-outline-secondary {% if request.GET.category == key %}active{% endif %}">{{ name }}</a>
+    {% endfor %}
+  </div>
+
+  <!-- Фильтрация по тегам -->
+  {% if posts %}
+    <div class="mb-3">
+      <strong>Теги:</strong>
+      {% for post in posts %}
+        {% for tag in post.tags.all %}
+          <a href="?tag={{ tag.name }}" class="badge bg-secondary text-decoration-none">{{ tag.name }}</a>
+        {% endfor %}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <!-- Список постов -->
+  {% if posts %}
+    <div class="list-group">
+      {% for post in posts %}
+        <a href="{% url 'post_detail' post.pk %}" class="list-group-item list-group-item-action">
+          <h5>{{ post.title }}</h5>
+          <p>{{ post.content|truncatewords:20 }}</p>
+          <small class="text-muted">{{ post.get_category_display }} — {{ post.created_at|date:"d.m.Y" }}</small>
+        </a>
+      {% endfor %}
+    </div>
+
+    <!-- Пагинация -->
+    {% if is_paginated %}
+      <nav class="mt-4">
+        <ul class="pagination justify-content-center">
+          {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Назад">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+          {% endif %}
+          {% for num in paginator.page_range %}
+            <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+              <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+            </li>
+          {% endfor %}
+          {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Вперёд">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+    {% endif %}
+  {% else %}
+    <p>Нет постов по заданным параметрам.</p>
+  {% endif %}
+
+</div>
+{% endblock %}
