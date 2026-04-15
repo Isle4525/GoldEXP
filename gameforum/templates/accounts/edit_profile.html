@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Редактирование профиля{% endblock %}
+{% block content %}
+<div class="container">
+    <h2>Редактирование профиля</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            {{ form.avatar.label_tag }}<br>
+            {% if user.avatar %}
+                <img src="{{ user.avatar.url }}" class="img-thumbnail mb-2" width="100">
+            {% endif %}
+            {{ form.avatar }}
+        </div>
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+    </form>
+</div>
+{% endblock %}

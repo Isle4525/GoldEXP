@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Профиль{% endblock %}
+{% block content %}
+<div class="container">
+    <h2>Профиль</h2>
+    {% if user.avatar %}
+        <img src="{{ user.avatar.url }}" class="img-thumbnail mb-3" width="150">
+    {% else %}
+        <p><em>Нет аватара</em></p>
+    {% endif %}
+    <p><strong>Имя пользователя:</strong> {{ user.username }}</p>
+    <p><strong>О себе:</strong> {{ user.bio }}</p>
+    <a href="{% url 'accounts:edit_profile' %}" class="btn btn-outline-primary mt-3">Редактировать профиль</a>
+</div>
+{% endblock %}

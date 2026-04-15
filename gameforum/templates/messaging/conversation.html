@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Переписка{% endblock %}
+{% block content %}
+<h2>Переписка</h2>
+{% for msg in messages %}
+    <div class="mb-2">
+        <strong>{{ msg.sender }}:</strong> {{ msg.text }}
+    </div>
+{% endfor %}
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success mt-2">Отправить</button>
+</form>
+{% endblock %}
